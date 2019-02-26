@@ -6,9 +6,15 @@
   "scripts": {
     "build": "tsc",
     "lint": "tslint --fix --project tsconfig.json",
-    "prepublishOnly": "yarn build"
+    "test": "mocha -r ts-node/register tests/**/*.spec.ts",
+    "prepublishOnly": "yarn test && yarn build"
   },
   "devDependencies": {
+    "@types/chai": "4.1.7",
+    "@types/mocha": "5.2.6",
+    "chai": "4.2.0",
+    "mocha": "6.0.2",
+    "ts-node": "8.0.2",
     "tslint": "5.13.0",
     "tslint-config-airbnb": "5.11.1",
     "typescript": "3.3.3333"
