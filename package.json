@@ -1,0 +1,17 @@
+{
+  "name": "hog-or",
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --fix --project tsconfig.json"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "devDependencies": {
+    "tslint": "5.13.0",
+    "tslint-config-airbnb": "5.11.1",
+    "typescript": "3.3.3333"
+  }
+}
