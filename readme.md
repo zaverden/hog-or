@@ -8,7 +8,30 @@ npm install --save hog-or
 yarn add hog-or
 ```
 
-## Overview
+## What it can
+
+You can write a field filter
+
+## How to use
+
+```typescript
+import parseQuery from 'hog-or'
+
+// we want to match objects where
+// org.name contains 'google'
+// OR
+// list of tags includes tags with 'goo' and 'mind'
+const query = parseQuery('org.name: google OR tags: goo AND tags: mind')
+query.match({
+  org: {
+    name: 'Alphabet Inc.'
+  },
+  tags: ['DeepMind', 'Google']
+}) // true, matched by tags
+
+query.filter(listOfCompanies) // it returns IterableIterator
+query.filterToArray(listOfCompanies) // it returns Array
+```
 
 
 ## For developers
