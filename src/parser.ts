@@ -8,12 +8,12 @@ export function parseQuery(queryStr: string): AndGroup[] {
   return orParts.map(parseAndGroup)
 }
 
-function parseAndGroup(groupStr: string): AndGroup {
+export function parseAndGroup(groupStr: string): AndGroup {
   const andParts = groupStr.split(' AND ')
   return { fields: andParts.map(parseField) }
 }
 
-function parseField(fieldStr: string): QueryField {
+export function parseField(fieldStr: string): QueryField {
   const [field] = fieldStr.split(':')
   const value = fieldStr.slice(field.length + 1).trim() // +1 to cut ':' too
   const isEmpty = value === IS_EMPTY_ALIAS
@@ -27,9 +27,8 @@ function parseField(fieldStr: string): QueryField {
 }
 
 export function buildValueSelector(path: string): ValueSelector {
-  // TODO: not implemented yet
   const fields = path.split('.')
-  return (obj: any) => obj[fields[0]]
+  return (obj: any) => get(obj, fields)
 }
 
 function get(obj: any, path: string[]): string {
