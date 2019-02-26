@@ -1,8 +1,13 @@
 {
   "name": "hog-or",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "lib/entry.js",
+  "homepage": "https://github.com/zerobasedjs/hog-or",
+  "repository": {
+    "type": "git",
+    "url": "github:zerobasedjs/hog-or"
+  },
   "scripts": {
     "prebuild": "rimraf lib",
     "build": "tsc",
