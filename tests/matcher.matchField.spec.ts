@@ -43,4 +43,11 @@ describe('matchField', () => {
     const matched = matchField(field, { })
     expect(matched).to.false
   })
+  it.skip('should correctly encode input value for regex', () => {
+    // TODO: it fails https://github.com/zerobasedjs/hog-or/issues/1
+    const field = parseField('a:.*')
+    const matched = matchField(field, { a: 'some value' })
+    expect(matched).to.false
+  })
+
 })
