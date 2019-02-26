@@ -3,7 +3,7 @@ import { ValueSelector, AndGroup, QueryField } from './types'
 export const IS_EMPTY_ALIAS = '!@'
 export const ARRAY_ITEMS_DELIMITER = '~'
 
-export function parseQuery(queryStr: string): AndGroup[] {
+export function parseGroups(queryStr: string): AndGroup[] {
   const orParts = queryStr.split(' OR ')
   return orParts.map(parseAndGroup)
 }
@@ -19,7 +19,6 @@ export function parseField(fieldStr: string): QueryField {
   const isEmpty = value === IS_EMPTY_ALIAS
   return {
     value,
-    isEmpty,
     path: field.trim(),
     regex: isEmpty ? null : new RegExp(value, 'i'),
     valueSelector: buildValueSelector(field.trim()),
@@ -28,7 +27,9 @@ export function parseField(fieldStr: string): QueryField {
 
 export function buildValueSelector(path: string): ValueSelector {
   const fields = path.split('.')
-  return (obj: any) => get(obj, fields)
+  return fields.length === 1
+    ? (obj: any) => convertToString(obj[fields[0]])
+    : (obj: any) => get(obj, fields)
 }
 
 function get(obj: any, path: string[]): string {

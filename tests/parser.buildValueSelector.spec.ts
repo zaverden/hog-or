@@ -1,56 +1,14 @@
 import { expect } from 'chai'
-import {
-  parseField, parseAndGroup, parseQuery, buildValueSelector,
-  IS_EMPTY_ALIAS, ARRAY_ITEMS_DELIMITER,
-} from '../src/parser'
-
-describe('parseField', () => {
-  it('should parse field', () => {
-    const field = parseField('some.path : some value ')
-    expect(field).to.have.property('path', 'some.path')
-    expect(field).to.have.property('value', 'some value')
-    expect(field).to.have.property('regex').that.is.an.instanceOf(RegExp)
-    expect(field).to.have.property('isEmpty', false)
-    expect(field).to.have.property('valueSelector').that.is.a('function')
-  })
-  it('should parse empty value', () => {
-    const field = parseField(`some.path : ${IS_EMPTY_ALIAS} `)
-    expect(field).to.have.property('path', 'some.path')
-    expect(field).to.have.property('value', IS_EMPTY_ALIAS)
-    expect(field).to.have.property('regex', null)
-    expect(field).to.have.property('isEmpty', true)
-    expect(field).to.have.property('valueSelector').that.is.a('function')
-  })
-})
-
-describe('parseAndGroup', () => {
-  it('should parse single field', () => {
-    const group = parseAndGroup('some.path : some value ')
-    expect(group.fields).to.be.an.instanceOf(Array).that.has.length(1)
-  })
-  it('should parse several field', () => {
-    const group = parseAndGroup('some.path : some value AND another.path : another value ')
-    expect(group.fields).to.be.an.instanceOf(Array).that.has.length(2)
-  })
-})
-
-describe('parseAndGroup', () => {
-  it('should parse single field', () => {
-    const group = parseQuery('some.path : some value ')
-    expect(group).to.be.an.instanceOf(Array).that.has.length(1)
-  })
-  it('should parse single and group', () => {
-    const group = parseQuery('some.path : some value AND another.path : another value ')
-    expect(group).to.be.an.instanceOf(Array).that.has.length(1)
-  })
-  it('should parse single and group', () => {
-    const group = parseQuery('some.path : some value AND another.path : another value OR some.path : another value')
-    expect(group).to.be.an.instanceOf(Array).that.has.length(2)
-  })
-})
+import { buildValueSelector, ARRAY_ITEMS_DELIMITER } from '../src/parser'
 
 describe('buildValueSelector', () => {
   it('should return string value', () => {
+    const selector = buildValueSelector('a')
+    const obj = { a: 'value' }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should return string value deep', () => {
     const selector = buildValueSelector('a.b.c.d')
     const obj = {
       a: {
@@ -119,7 +77,7 @@ describe('buildValueSelector', () => {
     const selector = buildValueSelector('a.b.c.d')
     const obj = {
       a: {
-        b: { },
+        b: {},
       },
     }
     const value = selector(obj)
