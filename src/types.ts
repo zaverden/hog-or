@@ -10,3 +10,7 @@ export interface QueryField {
 export interface AndGroup {
   fields: QueryField[]
 }
+
+export interface OrGroup {
+  andGroups: AndGroup[]
+}

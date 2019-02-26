@@ -1,11 +1,11 @@
-import { ValueSelector, AndGroup, QueryField } from './types'
+import { ValueSelector, QueryField, AndGroup, OrGroup } from './types'
 
 export const IS_EMPTY_ALIAS = '!@'
 export const ARRAY_ITEMS_DELIMITER = '~'
 
-export function parseGroups(queryStr: string): AndGroup[] {
+export function parseOrGroup(queryStr: string): OrGroup {
   const orParts = queryStr.split(' OR ')
-  return orParts.map(parseAndGroup)
+  return { andGroups: orParts.map(parseAndGroup) }
 }
 
 export function parseAndGroup(groupStr: string): AndGroup {

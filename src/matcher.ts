@@ -1,8 +1,8 @@
-import { AndGroup, QueryField } from './types'
+import { AndGroup, QueryField, OrGroup } from './types'
 
-export function matchGroups(groups: AndGroup[], obj: any): boolean {
-  for (const group of groups) {
-    if (matchAndGroup(group, obj)) {
+export function matchOrGroup(group: OrGroup, obj: any): boolean {
+  for (const andGroup of group.andGroups) {
+    if (matchAndGroup(andGroup, obj)) {
       return true
     }
   }
