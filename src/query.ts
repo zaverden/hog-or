@@ -1,12 +1,18 @@
-import { OrGroup } from './types'
+import { OrGroup, ParseOptions } from './types'
 import { parseOrGroup } from './parser'
 import { matchOrGroup } from './matcher'
 
-export default class Query {
-  constructor(public orGroup: OrGroup) { }
+export const defaultParseOptions: ParseOptions = Object.freeze({
+  caseSensitiveFields: true,
+  pathAliases: null,
+})
 
-  public static parse(queryStr: string): Query {
-    return new Query(parseOrGroup(queryStr))
+export default class Query {
+  constructor(public orGroup: OrGroup, public options: ParseOptions) { }
+
+  public static parse(queryStr: string, options?: Partial<ParseOptions>): Query {
+    const parseOptions = options === undefined ? defaultParseOptions : Object.assign({ }, defaultParseOptions, options)
+    return new Query(parseOrGroup(queryStr, parseOptions), parseOptions)
   }
 
   public match<T>(obj: T): boolean {
@@ -17,7 +23,7 @@ export default class Query {
   public filterToArray<T>(iterable: Iterable<T>): T[]
   public filterToArray<T>(iterator: Iterator<T>): T[]
   public filterToArray<T>(iterableOrIterator: IterableIterator<T> | Iterable<T> | Iterator<T>): T[] {
-    return Array.from(this.filter(iterableOrIterator as  IterableIterator<T>))
+    return Array.from(this.filter(iterableOrIterator as IterableIterator<T>))
   }
 
   public filter<T>(iterableIterator: IterableIterator<T>): IterableIterator<T>

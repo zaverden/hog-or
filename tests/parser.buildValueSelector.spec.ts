@@ -1,15 +1,19 @@
 import { expect } from 'chai'
 import { buildValueSelector, ARRAY_ITEMS_DELIMITER } from '../src/parser'
+import { ParseOptions } from '../src/types'
+
+const csOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: true }
+const ciOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: false }
 
 describe('buildValueSelector', () => {
-  it('should return string value', () => {
-    const selector = buildValueSelector('a')
+  it('should return string value [CI]', () => {
+    const selector = buildValueSelector('A', ciOptions)
     const obj = { a: 'value' }
     const value = selector(obj)
     expect(value).to.be.equal('value')
   })
-  it('should return string value deep', () => {
-    const selector = buildValueSelector('a.b.c.d')
+  it('should return string value deep [CI]', () => {
+    const selector = buildValueSelector('A.B.C.D', ciOptions)
     const obj = {
       a: {
         b: {
@@ -22,8 +26,28 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal('value')
   })
-  it('should handle strings array', () => {
-    const selector = buildValueSelector('a.b.c.d')
+  it('should return string value [CS]', () => {
+    const selector = buildValueSelector('a', csOptions)
+    const obj = { a: 'value' }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should return string value deep [CS]', () => {
+    const selector = buildValueSelector('a.b.c.d', csOptions)
+    const obj = {
+      a: {
+        b: {
+          c: {
+            d: 'value',
+          },
+        },
+      },
+    }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should handle strings array [CS]', () => {
+    const selector = buildValueSelector('a.b.c.d', csOptions)
     const obj = {
       a: {
         b: {
@@ -36,8 +60,8 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal(`value1${ARRAY_ITEMS_DELIMITER}value2`)
   })
-  it('should handle objects array', () => {
-    const selector = buildValueSelector('a.b.c.d')
+  it('should handle objects array [CS]', () => {
+    const selector = buildValueSelector('a.b.c.d', csOptions)
     const obj = {
       a: {
         b: {
@@ -51,8 +75,8 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal(`value1${ARRAY_ITEMS_DELIMITER}value2`)
   })
-  it('should handle nested objects array', () => {
-    const selector = buildValueSelector('a.b.c.d')
+  it('should handle nested objects array [CS]', () => {
+    const selector = buildValueSelector('a.b.c.d', csOptions)
     const obj = {
       a: {
         b: [{
@@ -73,8 +97,8 @@ describe('buildValueSelector', () => {
       `value1${ARRAY_ITEMS_DELIMITER}value2${ARRAY_ITEMS_DELIMITER}value3${ARRAY_ITEMS_DELIMITER}value4`,
     )
   })
-  it('should handle undefined', () => {
-    const selector = buildValueSelector('a.b.c.d')
+  it('should handle undefined [CS]', () => {
+    const selector = buildValueSelector('a.b.c.d', csOptions)
     const obj = {
       a: {
         b: {},
@@ -83,8 +107,8 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.empty.string
   })
-  it('should handle null', () => {
-    const selector = buildValueSelector('a.b.c.d')
+  it('should handle null [CS]', () => {
+    const selector = buildValueSelector('a.b.c.d', csOptions)
     const obj = {
       a: {
         b: {
@@ -95,8 +119,8 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.empty.string
   })
-  it('should convert number to string', () => {
-    const selector = buildValueSelector('a.b')
+  it('should convert number to string [CS]', () => {
+    const selector = buildValueSelector('a.b', csOptions)
     const obj = {
       a: {
         b: 1,
@@ -105,8 +129,8 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal(`${1}`)
   })
-  it('should convert boolean to string', () => {
-    const selector = buildValueSelector('a.b')
+  it('should convert boolean to string [CS]', () => {
+    const selector = buildValueSelector('a.b', csOptions)
     const obj = {
       a: {
         b: true,
@@ -115,8 +139,8 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal(`${true}`)
   })
-  it('should convert date to string', () => {
-    const selector = buildValueSelector('a.b')
+  it('should convert date to string [CS]', () => {
+    const selector = buildValueSelector('a.b', csOptions)
     const date = new Date()
     const obj = {
       a: {
@@ -128,7 +152,7 @@ describe('buildValueSelector', () => {
   })
   it.skip('should handle Set as array (end)', () => {
     // TODO: AssertionError: expected '[object Set]' to equal 'value1~value2'
-    const selector = buildValueSelector('a.b')
+    const selector = buildValueSelector('a.b', csOptions)
     const obj = {
       a: {
         b: new Set(['value1', 'value2']),
@@ -139,7 +163,7 @@ describe('buildValueSelector', () => {
   })
   it.skip('should handle Set as array (middle)', () => {
     // TODO: AssertionError: expected '' to equal 'value'
-    const selector = buildValueSelector('a.b.c')
+    const selector = buildValueSelector('a.b.c', csOptions)
     const obj = {
       a: {
         b: new Set([{ c: 'value' }]),
@@ -150,7 +174,7 @@ describe('buildValueSelector', () => {
   })
   it.skip('should handle Map as object', () => {
     // TODO: AssertionError: expected '' to equal 'value'
-    const selector = buildValueSelector('a.b.c.d')
+    const selector = buildValueSelector('a.b.c.d', csOptions)
     const obj = {
       a: {
         b: new Map([

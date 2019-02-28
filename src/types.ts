@@ -14,3 +14,8 @@ export interface AndGroup {
 export interface OrGroup {
   andGroups: AndGroup[]
 }
+
+export interface ParseOptions {
+  caseSensitiveFields: boolean
+  pathAliases: { [key: string]: string } | null
+}
