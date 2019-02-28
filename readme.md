@@ -46,6 +46,20 @@ query.filter(listOfCompanies) // it returns IterableIterator
 query.filterToArray(listOfCompanies) // it returns Array
 ```
 
+## Available options
+
+### `caseSensitiveFields: boolean`
+
+Defines whether it should ignore case of field during getting value.
+
+```typescript
+const organization = { orgName: 'Google Inc.' }
+const caseSensitiveQuery = parseQuery('orgname: google', { caseSensitiveFields: true })
+const caseInsensitiveQuery = parseQuery('orgname: google', { caseSensitiveFields: false })
+
+caseSensitiveQuery.match(organization) // false, because it requires field `orgname`, but object has `orgName`
+caseInsensitiveQuery.match(organization) // true
+```
 
 ## For developers
 
