@@ -26,6 +26,26 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal('value')
   })
+  it('should return string value [CI2]', () => {
+    const selector = buildValueSelector('a', ciOptions)
+    const obj = { A: 'value' }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should return string value deep [CI2]', () => {
+    const selector = buildValueSelector('a.b.c.d', ciOptions)
+    const obj = {
+      A: {
+        b: {
+          c: {
+            d: 'value',
+          },
+        },
+      },
+    }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
   it('should return string value [CS]', () => {
     const selector = buildValueSelector('a', csOptions)
     const obj = { a: 'value' }
