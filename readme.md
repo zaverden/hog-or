@@ -57,8 +57,19 @@ const organization = { orgName: 'Google Inc.' }
 const caseSensitiveQuery = parseQuery('orgname: google', { caseSensitiveFields: true })
 const caseInsensitiveQuery = parseQuery('orgname: google', { caseSensitiveFields: false })
 
-caseSensitiveQuery.match(organization) // false, because it requires field `orgname`, but object has `orgName`
+caseSensitiveQuery.match(organization)   // false, because it requires field `orgname`,
+                                         // but object has `orgName`
 caseInsensitiveQuery.match(organization) // true
+```
+
+### `pathAliases: { [key: string]: string }`
+
+Defines aliases for paths.
+
+```typescript
+const organization = { organization: { identity: { names: { title: Google Inc. } } } }
+const simpleQuery = parseQuery('organization.identity.names.title: google')
+const aliasedQuery = parseQuery('org: google', { pathAliases: { org: 'organization.identity.names.title' } })
 ```
 
 ## For developers
