@@ -2,7 +2,7 @@ import { expect } from 'chai'
 import { parseOrGroup } from '../src/parser'
 import { ParseOptions } from '../src/types'
 
-const csOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: true }
+const csOptions: ParseOptions = { caseSensitiveFields: true }
 
 describe('parseOrGroup', () => {
   it('should parse single field', () => {

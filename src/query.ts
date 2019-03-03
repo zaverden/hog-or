@@ -4,11 +4,10 @@ import { matchOrGroup } from './matcher'
 
 export const defaultParseOptions: ParseOptions = Object.freeze({
   caseSensitiveFields: true,
-  pathAliases: null,
 })
 
 export default class Query {
-  constructor(public orGroup: OrGroup, public options: ParseOptions) { }
+  constructor(public readonly orGroup: OrGroup, public readonly options: ParseOptions) { }
 
   public static parse(queryStr: string, options?: Partial<ParseOptions>): Query {
     const parseOptions = options === undefined ? defaultParseOptions : Object.assign({ }, defaultParseOptions, options)

@@ -15,14 +15,15 @@ export function parseAndGroup(groupStr: string, options: ParseOptions): AndGroup
 }
 
 export function parseField(fieldStr: string, options: ParseOptions): QueryField {
-  const [field] = fieldStr.split(':')
-  const value = fieldStr.slice(field.length + 1).trim() // +1 to cut ':' too
+  const [pathOrAlias] = fieldStr.split(':')
+  const value = fieldStr.slice(pathOrAlias.length + 1).trim() // +1 to cut ':' too
   const isEmpty = value === IS_EMPTY_ALIAS
+  const path = resolveAlias(pathOrAlias.trim(), options.pathAliases)
   return {
     value,
-    path: field.trim(),
+    path,
     regex: isEmpty ? null : new RegExp(value, 'i'),
-    valueSelector: buildValueSelector(field.trim(), options),
+    valueSelector: buildValueSelector(path, options),
   }
 }
 
@@ -64,4 +65,12 @@ function getFieldValue(obj: any, field: string, caseSensitiveFields: boolean): a
   const fieldRe = new RegExp(`^${escapeRegExp(field)}$`, 'i')
   const key = Array.from(Object.keys(obj)).find(key => !!key.match(fieldRe))
   return key === undefined ? null : obj[key]
+}
+
+function resolveAlias(fieldOrAlias: string, pathAliases: { [key: string]: string } | undefined) {
+  if (pathAliases === undefined) {
+    return fieldOrAlias
+  }
+  const field = getFieldValue(pathAliases, fieldOrAlias, true) as string | undefined
+  return field === undefined ? fieldOrAlias : field
 }

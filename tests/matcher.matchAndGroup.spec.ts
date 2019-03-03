@@ -3,7 +3,7 @@ import { matchAndGroup } from '../src/matcher'
 import { parseAndGroup } from '../src/parser'
 import { ParseOptions } from '../src/types'
 
-const csOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: true }
+const csOptions: ParseOptions = { caseSensitiveFields: true }
 
 describe('matchAndGroup', () => {
   it('should match if all fields are matched', () => {

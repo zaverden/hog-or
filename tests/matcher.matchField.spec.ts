@@ -3,7 +3,7 @@ import { matchField } from '../src/matcher'
 import { parseField, IS_EMPTY_ALIAS } from '../src/parser'
 import { ParseOptions } from '../src/types'
 
-const csOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: true }
+const csOptions: ParseOptions = { caseSensitiveFields: true }
 
 describe('matchField', () => {
   it('should match string by contains', () => {

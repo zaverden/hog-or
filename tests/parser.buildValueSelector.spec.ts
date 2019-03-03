@@ -2,50 +2,10 @@ import { expect } from 'chai'
 import { buildValueSelector, ARRAY_ITEMS_DELIMITER } from '../src/parser'
 import { ParseOptions } from '../src/types'
 
-const csOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: true }
-const ciOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: false }
+const csOptions: ParseOptions = { caseSensitiveFields: true }
+const ciOptions: ParseOptions = { caseSensitiveFields: false }
 
 describe('buildValueSelector', () => {
-  it('should return string value [CI]', () => {
-    const selector = buildValueSelector('A', ciOptions)
-    const obj = { a: 'value' }
-    const value = selector(obj)
-    expect(value).to.be.equal('value')
-  })
-  it('should return string value deep [CI]', () => {
-    const selector = buildValueSelector('A.B.C.D', ciOptions)
-    const obj = {
-      a: {
-        b: {
-          c: {
-            d: 'value',
-          },
-        },
-      },
-    }
-    const value = selector(obj)
-    expect(value).to.be.equal('value')
-  })
-  it('should return string value [CI2]', () => {
-    const selector = buildValueSelector('a', ciOptions)
-    const obj = { A: 'value' }
-    const value = selector(obj)
-    expect(value).to.be.equal('value')
-  })
-  it('should return string value deep [CI2]', () => {
-    const selector = buildValueSelector('a.b.c.d', ciOptions)
-    const obj = {
-      A: {
-        b: {
-          c: {
-            d: 'value',
-          },
-        },
-      },
-    }
-    const value = selector(obj)
-    expect(value).to.be.equal('value')
-  })
   it('should return string value [CS]', () => {
     const selector = buildValueSelector('a', csOptions)
     const obj = { a: 'value' }
@@ -205,4 +165,46 @@ describe('buildValueSelector', () => {
     const value = selector(obj)
     expect(value).to.be.equal('value')
   })
+  // #region options.caseSensitiveFields = false
+  it('should return string value [CI]', () => {
+    const selector = buildValueSelector('A', ciOptions)
+    const obj = { a: 'value' }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should return string value deep [CI]', () => {
+    const selector = buildValueSelector('A.B.C.D', ciOptions)
+    const obj = {
+      a: {
+        b: {
+          c: {
+            d: 'value',
+          },
+        },
+      },
+    }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should return string value [CI2]', () => {
+    const selector = buildValueSelector('a', ciOptions)
+    const obj = { A: 'value' }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  it('should return string value deep [CI2]', () => {
+    const selector = buildValueSelector('a.b.c.d', ciOptions)
+    const obj = {
+      A: {
+        b: {
+          c: {
+            d: 'value',
+          },
+        },
+      },
+    }
+    const value = selector(obj)
+    expect(value).to.be.equal('value')
+  })
+  // #endregion options.caseSensitiveFields = false
 })

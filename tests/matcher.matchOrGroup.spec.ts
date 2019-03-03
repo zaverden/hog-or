@@ -3,7 +3,7 @@ import { matchOrGroup } from '../src/matcher'
 import { parseOrGroup } from '../src/parser'
 import { ParseOptions } from '../src/types'
 
-const csOptions: ParseOptions = { pathAliases: null, caseSensitiveFields: true }
+const csOptions: ParseOptions = { caseSensitiveFields: true }
 
 describe('matchOrGroup', () => {
   it('should match if some group is matched', () => {

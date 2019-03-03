@@ -1,21 +1,21 @@
 export type ValueSelector = (obj: any) => string
 
 export interface QueryField {
-  path: string
-  value: string
-  regex: RegExp | null
-  valueSelector: ValueSelector
+  readonly path: string
+  readonly value: string
+  readonly regex: RegExp | null
+  readonly valueSelector: ValueSelector
 }
 
 export interface AndGroup {
-  fields: QueryField[]
+  readonly fields: QueryField[]
 }
 
 export interface OrGroup {
-  andGroups: AndGroup[]
+  readonly andGroups: AndGroup[]
 }
 
 export interface ParseOptions {
   caseSensitiveFields: boolean
-  pathAliases: { [key: string]: string } | null
+  pathAliases?: { [key: string]: string }
 }
