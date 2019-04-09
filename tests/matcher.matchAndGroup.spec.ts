@@ -16,4 +16,9 @@ describe('matchAndGroup', () => {
     const matched = matchAndGroup(field, { a: 'hello there', b: 'hello there again' })
     expect(matched).to.false
   })
+  it('should match with NOT respect', () => {
+    const field = parseAndGroup('a:there AND NOT b:too', csOptions)
+    const matched = matchAndGroup(field, { a: 'hello there', b: 'hello there again' })
+    expect(matched).to.true
+  })
 })
