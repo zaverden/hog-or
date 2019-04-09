@@ -22,6 +22,7 @@ export function matchField<T>(field: QueryField, obj: T): boolean {
   const { regex, valueSelector } = field
   const objValue = valueSelector(obj)
   if (objValue === '') {
+    // regex === null means we want to match empty value
     return regex === null
   }
   return regex !== null && !!objValue.match(regex)

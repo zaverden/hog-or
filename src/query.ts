@@ -2,9 +2,9 @@ import { OrGroup, ParseOptions } from './types'
 import { parseOrGroup } from './parser'
 import { matchOrGroup } from './matcher'
 
-export const defaultParseOptions: ParseOptions = Object.freeze({
+export const defaultParseOptions = Object.freeze({
   caseSensitiveFields: true,
-})
+} as ParseOptions)
 
 export default class Query {
   constructor(public readonly orGroup: OrGroup, public readonly options: ParseOptions) { }

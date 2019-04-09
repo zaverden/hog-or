@@ -15,13 +15,26 @@ export function parseAndGroup(groupStr: string, options: ParseOptions): AndGroup
 }
 
 export function parseField(fieldStr: string, options: ParseOptions): QueryField {
-  const [pathOrAlias] = fieldStr.split(':')
-  const value = fieldStr.slice(pathOrAlias.length + 1).trim() // +1 to cut ':' too
+  const separatorIndex = fieldStr.indexOf(':')
+  const prefix = (separatorIndex === -1
+    ? fieldStr
+    : fieldStr.slice(0, separatorIndex)).trim()
+
+  const not = prefix.startsWith('NOT ')
+  const pathOrAlias = not
+    ? prefix.replace(/^NOT/, '').trim()
+    : prefix
+
+  const value = separatorIndex === -1
+    ? ''
+    : fieldStr.slice(separatorIndex + 1).trim() // +1 to cut ':' too
+
   const isEmpty = value === IS_EMPTY_ALIAS
   const path = resolveAlias(pathOrAlias.trim(), options.pathAliases)
   return {
-    value,
+    not,
     path,
+    value,
     regex: isEmpty ? null : new RegExp(value, 'i'),
     valueSelector: buildValueSelector(path, options),
   }
@@ -67,10 +80,10 @@ function getFieldValue(obj: any, field: string, caseSensitiveFields: boolean): a
   return key === undefined ? null : obj[key]
 }
 
-function resolveAlias(fieldOrAlias: string, pathAliases: { [key: string]: string } | undefined) {
+function resolveAlias(fieldOrAlias: string, pathAliases: { [key: string]: string } | undefined): string {
   if (pathAliases === undefined) {
     return fieldOrAlias
   }
-  const field = getFieldValue(pathAliases, fieldOrAlias, true) as string | undefined
-  return field === undefined ? fieldOrAlias : field
+  const field = getFieldValue(pathAliases, fieldOrAlias, true) as string | null
+  return field === null ? fieldOrAlias : field
 }
