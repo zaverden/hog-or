@@ -12,12 +12,13 @@ yarn add hog-or
 
 - You can write a field filter as `path.to.field: value` and it will match objects where string in `path.to.field` contains `value`
 - You can combine field filters by `AND` and `OR` (with standard operations order)
+- You can add `NOT` before a field name to match objects where field does not contains a value
 - You can use `!@` as empty value alias, like `path.to.field: !@` matches if `path.to.field` is empty (`null`, `undefined`, empty string, empty array)
-- You can have an object with array fields and it will be matched (see [How to use](#how-to-use))
+- You can have an object with array fields and it will be matched (see [How to use](#how-to-use-hog-or))
 
 ## Lower your expectations
 
-- `hog-or` creates `RegExp` to match, and `hog-or` does not encode input values (https://github.com/zerobasedjs/hog-or/issues/1)
+- `hog-or` creates `RegExp` to match, and `hog-or` does not encode input values ([#1](https://github.com/zerobasedjs/hog-or/issues/1))
 - you can't escape empty value alias
 - `hog-or` does not support parentheses to change operations order
 - `hog-or` does not support `Set` and `Map`
@@ -44,6 +45,13 @@ query.match({
 
 query.filter(listOfCompanies) // it returns IterableIterator
 query.filterToArray(listOfCompanies) // it returns Array
+
+// usage of NOT
+const query2 = parseQuery('status: error AND NOT status: unknown')
+query2.match({ status: 'error/data-parse' }) // true
+query2.match({ status: 'error/timeout' }) // true
+query2.match({ status: 'error/unknown' }) // false
+
 ```
 
 ## Available options

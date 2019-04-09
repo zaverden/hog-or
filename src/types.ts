@@ -1,6 +1,7 @@
 export type ValueSelector = (obj: any) => string
 
 export interface QueryField {
+  readonly not: boolean
   readonly path: string
   readonly value: string
   readonly regex: RegExp | null
@@ -16,6 +17,9 @@ export interface OrGroup {
 }
 
 export interface ParseOptions {
+  /** Defines whether field name should be matched case sensitive
+   * Default value is true
+  */
   caseSensitiveFields: boolean
   pathAliases?: { [key: string]: string }
 }

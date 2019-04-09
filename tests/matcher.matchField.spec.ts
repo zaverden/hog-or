@@ -11,6 +11,16 @@ describe('matchField', () => {
     const matched = matchField(field, { a: 'hello there' })
     expect(matched).to.true
   })
+  it('should not match string if NOT', () => {
+    const field = parseField('NOT a:there', csOptions)
+    const matched = matchField(field, { a: 'hello there' })
+    expect(matched).to.false
+  })
+  it('should match string by NOT contains', () => {
+    const field = parseField('NOT a:world', csOptions)
+    const matched = matchField(field, { a: 'hello there' })
+    expect(matched).to.true
+  })
   it('should match string by contains case insensitive', () => {
     const field = parseField('a:there', csOptions)
     const matched = matchField(field, { a: 'hello ThErE' })

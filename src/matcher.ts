@@ -19,10 +19,16 @@ export function matchAndGroup<T>(group: AndGroup, obj: T): boolean {
 }
 
 export function matchField<T>(field: QueryField, obj: T): boolean {
-  const { regex, valueSelector } = field
+  const { regex, valueSelector, not } = field
   const objValue = valueSelector(obj)
-  if (objValue === '') {
+  const matched = isMatched(regex, objValue)
+  return not ? !matched : matched
+}
+
+function isMatched(regex: RegExp | null, value: string): boolean {
+  if (value === '') {
+    // regex === null means we want to match empty value
     return regex === null
   }
-  return regex !== null && !!objValue.match(regex)
+  return regex !== null && value.match(regex) !== null
 }
