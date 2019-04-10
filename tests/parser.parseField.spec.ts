@@ -34,6 +34,16 @@ describe('parseField', () => {
     expect(field.valueSelector({ theField: 'not-expected' }))
       .to.be.equal('')
   })
+  it('should parse field with missing alias', () => {
+    const options: ParseOptions = Object.assign({ pathAliases: { theField: 'some.path' } }, csOptions)
+    const field = parseField('field : some value ', options)
+    expect(field).to.have.property('not', false)
+    expect(field).to.have.property('path', 'field')
+    expect(field).to.have.property('value', 'some value')
+    expect(field).to.have.property('regex').that.is.an.instanceOf(RegExp)
+    expect(field).to.have.property('valueSelector').that.is.a('function')
+    expect(field.valueSelector({ field: 'expected' })).to.be.equal('expected')
+  })
   it('should parse not', () => {
     const field = parseField('NOT some.path : some value ', csOptions)
     expect(field).to.have.property('not', true)
