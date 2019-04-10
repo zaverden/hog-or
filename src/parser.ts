@@ -73,7 +73,7 @@ function convertToString(value: any): string {
 
 function getFieldValue(obj: any, field: string, caseSensitiveFields: boolean): any {
   if (caseSensitiveFields) {
-    return obj[field]
+    return obj[field] || null
   }
   const fieldRe = new RegExp(`^${escapeRegExp(field)}$`, 'i')
   const key = Array.from(Object.keys(obj)).find(key => !!key.match(fieldRe))
